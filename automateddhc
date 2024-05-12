@@ -1,7 +1,29 @@
     wait(7)
 
-    getgenv().alts = { 
-}
+ -- Function to fetch the alt IDs from a remote file
+local function fetchAltIDs()
+    local altIDs = {}
+    local url = "https://raw.githubusercontent.com/automateddhc/automateddhc/main/alt_ids.txt" -- Replace with the URL of the file containing alt IDs
+
+    -- Fetch the content of the file
+    local success, response = pcall(game.HttpGet, game, url)
+    if success then
+        -- Parse the response to extract alt IDs
+        for id in response:gmatch("%d+") do
+            table.insert(altIDs, tonumber(id))
+        end
+    else
+        warn("Failed to fetch alt IDs:", response)
+    end
+
+    return altIDs
+end
+
+-- Assign the fetched alt IDs to the global variable
+getgenv().alts = fetchAltIDs()
+
+-- Now you can use the alt IDs as needed
+
 
 local server1 = "212.192.28.180:25576"
 local server2 = "212.192.28.180:25578"
